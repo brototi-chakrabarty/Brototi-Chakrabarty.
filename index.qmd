@@ -1,5 +1,5 @@
 ---
-title: "Your Name"
+title: "Brototi"
 toc: false
 image: "your photo.jpg"
 about:
@@ -21,10 +21,10 @@ Welcome to my research profile website. I'm a student in the Intro to Reproducib
 
 Replace this section with information about yourself:
 
-- **Name:** Your Name Here
-- **Institution:** Your University
-- **Research Interests:** Add your research interests here
-- **Email:** your.email@university.edu
+- **Name:** Brototi Chakrabarty
+- **Institution:** University of Oklahoma Health Campus
+- **Research Interests:** Nanoformulation for Inner Ear diseases
+- **Email:** brototi-chakrabarty@ou.edu
 
 ## My Research
 

@@ -1,14 +1,16 @@
 ---
-title: "Projects"
+title: "Exploratory Analysis of Maternal Health Risk Factors in Bangladesh Using R"
 ---
 
 # My Projects
 
-Here are my research projects and work:
+
 
 ## Final Report
 
 My final project for CELL 6351 - Intro to Reproducible Data Analysis Using R.
+
+I will analyze a maternal health risk dataset collected from hospitals and community clinics in rural Bangladesh. The dataset includes age, systolic and diastolic blood pressure, blood sugar, body temperature, heart rate, and maternal risk level. Using R and the tidyverse package, I will summarize and visualize differences among low-, mid-, and high-risk groups through bar charts, boxplots, scatterplots, and dimension-reduction methods such as PCA or UMAP. I will examine the number of patients in each risk category, differences in age, blood pressure, and blood sugar across risk groups, the clinical measurements most strongly associated with risk level, and whether PCA or UMAP can separate patients according to risk category. I will present the final analysis as a reproducible Quarto webpage containing the R code, figures, interpretations, and conclusion.
 
 [**View Final Report** →](projects/final-report.qmd)
 
