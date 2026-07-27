@@ -1,18 +1,154 @@
 ---
-title: "Final Report: [Your Project Title]"
+title: "Exploratory Analysis of Maternal Health Risk Factors in Bangladesh"
 date: 2026-06-04
-author: "Your Name"
+author: "Brototi Chakrabarty"
 ---
 
-# Final Report: [Your Project Title]
+# Final Report: Exploratory Analysis of Maternal Health Risk Factors in Bangladesh
 
 ## Introduction
 
-Replace this with an introduction to your research question or project. What are you investigating? Why does it matter?
+Maternal health risk assessment is important for identifying pregnant women who may require additional medical care. In this project, I will analyze a maternal health risk dataset collected from hospitals and community clinics in rural Bangladesh. The dataset includes maternal age, systolic and diastolic blood pressure, blood sugar, body temperature, heart rate, and maternal risk level.
 
+I will use R to compare low-, mid-, and high-risk groups, examine relationships among the clinical measurements, and determine whether principal component analysis can reveal patterns among the maternal risk categories.
+
+## Packages Used
+
+```{r}
+library(tidyverse)
+library(here)
+```
 ## Methods
 
-Describe how you conducted your analysis. What data did you use? What analyses did you perform?
+The dataset will be imported and analyzed using R and the tidyverse package. I will examine the structure and quality of the data, summarize the clinical measurements, and create bar charts, boxplots, scatterplots, and correlation plots. Principal component analysis will also be used to explore whether the maternal risk categories show distinct patterns.
+
+## Get the Data
+
+```{r}
+maternal_data <- read_csv(
+  here("data", "Maternal Health Risk Data Set.csv"),
+  show_col_types = FALSE
+)
+```
+## Check the Data
+
+```{r}
+glimpse(maternal_data)
+```
+## Prepare the Data
+
+```{r}
+maternal_data <- maternal_data |>
+  mutate(
+    RiskLevel = str_to_lower(str_trim(RiskLevel)),
+    RiskLevel = factor(
+      RiskLevel,
+      levels = c("low risk", "mid risk", "high risk"),
+      ordered = TRUE))
+```
+
+```{r}
+levels(maternal_data$RiskLevel)
+```
+## Questions
+
+### 1. How many observations are classified as low, mid, or high risk?
+
+First, I will count the number of observations in each maternal risk category.
+
+```{r}
+maternal_data |>
+  count(RiskLevel, sort = TRUE) |>
+  ggplot(aes(
+    x = RiskLevel,
+    y = n,
+    fill = RiskLevel
+  )) +
+  geom_col(width = 0.7, show.legend = FALSE) +
+  geom_text(
+    aes(label = n),
+    vjust = -0.4
+  ) +
+  labs(
+    title = "Number of Observations in Each Maternal Risk Category",
+    x = "Maternal Risk Level",
+    y = "Number of Observations"
+  ) +
+  theme_minimal()
+```
+Low-risk observations were the most common, with 406 records (40.0%). Mid-risk observations included 336 records (33.1%), while high-risk observations included 272 records (26.8%). Although the high-risk group was the smallest category, it still represented more than one-quarter of the dataset.
+
+### 2. How does maternal age differ across risk groups?
+
+Maternal age will be compared across the low-, mid-, and high-risk categories.
+
+```{r}
+maternal_data |>
+  ggplot(aes(
+    x = RiskLevel,
+    y = Age,
+    fill = RiskLevel
+  )) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(
+    title = "Maternal Age Across Risk Categories",
+    x = "Maternal Risk Level",
+    y = "Age"
+  ) +
+  theme_minimal()
+```
+Maternal age differed across the three risk categories. The high-risk group had a higher median age than the low- and mid-risk groups, although the age distributions overlapped. This suggests that higher maternal age is associated with increased risk classification in this dataset.
+
+### 3. How do systolic and diastolic blood pressure differ across risk groups?
+
+Systolic and diastolic blood pressure will be compared among the three maternal risk categories.
+
+```{r}
+maternal_data |>
+  select(RiskLevel, SystolicBP, DiastolicBP) |>
+  pivot_longer(
+    cols = c(SystolicBP, DiastolicBP),
+    names_to = "BloodPressureType",
+    values_to = "BloodPressure"
+  ) |>
+  ggplot(aes(
+    x = RiskLevel,
+    y = BloodPressure,
+    fill = RiskLevel
+  )) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(
+    ~BloodPressureType,
+    scales = "free_y"
+  ) +
+  labs(
+    title = "Blood Pressure Across Maternal Risk Categories",
+    x = "Maternal Risk Level",
+    y = "Blood Pressure"
+  ) +
+  theme_minimal()
+```
+Both systolic and diastolic blood pressure were higher in the high-risk group than in the low- and mid-risk groups. The median systolic blood pressure was approximately 130 mmHg in the high-risk group compared with about 120 mmHg in the other groups, while the median diastolic blood pressure was approximately 90 mmHg compared with about 75 mmHg. Although the distributions overlapped, the results suggest that higher blood pressure is associated with a higher maternal risk classification in this dataset.
+
+### 4. How does blood sugar differ across maternal risk groups?
+
+Blood sugar measurements will be compared among the low-, mid-, and high-risk groups.
+
+```{r}
+maternal_data |>
+  ggplot(aes(
+    x = RiskLevel,
+    y = BS,
+    fill = RiskLevel
+  )) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(
+    title = "Blood Sugar Across Maternal Risk Categories",
+    x = "Maternal Risk Level",
+    y = "Blood Sugar"
+  ) +
+  theme_minimal()
+```
 
 ## Results
 
