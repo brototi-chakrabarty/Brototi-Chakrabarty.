@@ -7,9 +7,12 @@ about:
   links:
   - text: GitHub
     href: link
-  - text: email
-    href:  link
+  - href: https://brototi-chakrabarty.github.io/Brototi-Chakrabarty./
+    - icon: envelope
+      text: Email
+      href: mailto:brototi-chakrabarty@ou.edu
 ---
+
 
 ::: {.columnpage}
 
@@ -23,17 +26,23 @@ Replace this section with information about yourself:
 
 - **Name:** Brototi Chakrabarty
 - **Institution:** University of Oklahoma Health Campus
-- **Research Interests:** Nanoformulation for Inner Ear diseases
+- **Research Interests:** Nanoformulations and localized drug-delivery systems for inner-ear diseases 
 - **Email:** brototi-chakrabarty@ou.edu
 
 ## My Research
 
-I'm interested in understanding [your topic area]. Through this course, I've learned how to:
+My research focuses on developing advanced drug-delivery systems for the treatment and prevention of inner-ear diseases. I am particularly interested in nanoformulations, exosome-based drug delivery, lipid-based nanoparticles, and thermoresponsive hydrogels.
 
-- Use R for data analysis
-- Create reproducible research workflows
-- Build websites to share my work
-- Manage my research projects with Git and GitHub
+
+## Research Interests
+
+- Nanomedicine and targeted drug delivery
+- Inner-ear drug delivery
+- Exosome-based formulations
+- Polymeric and lipid-based nanoparticles
+- Thermoresponsive hydrogels
+- Three-dimensional cell-culture models
+- Reproducible data analysis using R
 
 ## This Website
 

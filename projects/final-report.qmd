@@ -149,40 +149,142 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
+Blood sugar levels were clearly higher in the high-risk group than in the low- and mid-risk groups. The high-risk group had a median blood sugar value of approximately 11, while the medians for the low- and mid-risk groups were around 7. Although some high blood sugar outliers were present in the mid-risk group, the overall pattern suggests that higher blood sugar is associated with a higher maternal risk classification in this dataset.
 
-## Results
+### 5. How do body temperature and heart rate differ across risk groups?
 
-Share your findings here. You can include:
-
-- Text explanations
-- Tables
-- Figures and visualizations
-- Code examples (if relevant)
-
-### Example Code Block
-
-Here's a sample R code block:
+Body temperature and heart rate will be compared among the maternal risk categories.
 
 ```{r}
-# Load a library
-library(ggplot2)
+maternal_data |>
+  select(RiskLevel, BodyTemp, HeartRate) |>
+  pivot_longer(
+    cols = c(BodyTemp, HeartRate),
+    names_to = "Measurement",
+    values_to = "Value"
+  ) |>
+  ggplot(aes(
+    x = RiskLevel,
+    y = Value,
+    fill = RiskLevel
+  )) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(
+    ~Measurement,
+    scales = "free_y"
+  ) +
+  labs(
+    title = "Body Temperature and Heart Rate Across Risk Categories",
+    x = "Maternal Risk Level",
+    y = "Observed Value"
+  ) +
+  theme_minimal()
+```
+Body temperature was similar across the three risk groups, with most observations close to 98°F. The mid- and high-risk groups showed a wider range of temperatures than the low-risk group. Heart rate was slightly higher in the high-risk group, but the distributions overlapped considerably. One unusually low heart-rate value was present in the low-risk group and may represent a recording error. Overall, body temperature and heart rate showed weaker differences across risk categories than blood sugar and blood pressure.
 
-# Create some sample data
-data <- data.frame(
-  x = 1:10,
-  y = rnorm(10)
-)
+### 6. Which clinical measurements are most strongly associated with maternal risk level?
 
-# Make a plot
-plot(data$x, data$y)
+The ordered risk categories will be converted to numeric scores, with low risk equal to 1, mid risk equal to 2, and high risk equal to 3. Spearman correlations will then be calculated.
+
+```{r}
+risk_associations <- maternal_data |>
+  mutate(
+    RiskScore = as.numeric(RiskLevel)
+  ) |>
+  summarise(
+    across(
+      c(
+        Age,
+        SystolicBP,
+        DiastolicBP,
+        BS,
+        BodyTemp,
+        HeartRate
+      ),
+      ~cor(
+        .x,
+        RiskScore,
+        method = "spearman",
+        use = "complete.obs"
+      )
+    )
+  ) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "Measurement",
+    values_to = "Correlation"
+  ) |>
+  arrange(desc(Correlation))
+
+risk_associations
 ```
 
-### Example Table
+```{r}
+risk_associations |>
+  ggplot(aes(
+    x = reorder(Measurement, Correlation),
+    y = Correlation
+  )) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Clinical Measurements Associated With Maternal Risk Level",
+    x = "Clinical Measurement",
+    y = "Spearman Correlation"
+  ) +
+  theme_minimal()
+```
 
-| Method | Result | P-value |
-|--------|--------|---------|
-| Analysis 1 | Significant | 0.01 |
-| Analysis 2 | Not Significant | 0.15 |
+Blood sugar showed the strongest positive association with increasing maternal risk level, followed by systolic blood pressure, diastolic blood pressure, and age. These results describe associations and do not demonstrate causation.
+
+
+### 7. Can PCA visually separate observations according to maternal risk category?
+
+Principal component analysis will be performed using the six numeric clinical measurements. The variables will be centered and standardized because they use different measurement scales.
+
+```{r}
+pca_model <- maternal_data |>
+  select(
+    Age,
+    SystolicBP,
+    DiastolicBP,
+    BS,
+    BodyTemp,
+    HeartRate
+  ) |>
+  prcomp(
+    center = TRUE,
+    scale. = TRUE
+  )
+```
+
+```{r}
+pca_data <- as_tibble(pca_model$x) |>
+  mutate(
+    RiskLevel = maternal_data$RiskLevel)
+
+pca_data |>
+  ggplot(aes(
+    x = PC1,
+    y = PC2,
+    color = RiskLevel
+  )) +
+  geom_point(
+    alpha = 0.6,
+    size = 2
+  ) +
+  labs(
+    title = "PCA of Maternal Health Measurements",
+    subtitle = "Observations are colored by maternal risk category",
+    x = "Principal Component 1",
+    y = "Principal Component 2",
+    color = "Risk Level"
+  ) +
+  theme_minimal()
+```
+The PCA plot shows partial separation of the maternal risk categories. High-risk observations were more frequently located on the positive side of Principal Component 1, while many low- and mid-risk observations were concentrated near the center or negative side. However, substantial overlap remained among all three groups, indicating that the six clinical measurements did not completely separate patients by maternal risk category. One low-risk observation appeared far from the other points along Principal Component 2 and may represent an unusual record or outlier.
+
+
 
 ## Discussion
 
