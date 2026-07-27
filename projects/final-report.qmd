@@ -234,9 +234,7 @@ risk_associations |>
   ) +
   theme_minimal()
 ```
-
 Blood sugar showed the strongest positive association with increasing maternal risk level, followed by systolic blood pressure, diastolic blood pressure, and age. These results describe associations and do not demonstrate causation.
-
 
 ### 7. Can PCA visually separate observations according to maternal risk category?
 
@@ -296,7 +294,7 @@ Summarize your findings and their implications.
 
 ## References
 
-Add any references to papers, data sources, or resources you used.
+
 
 ---
 
