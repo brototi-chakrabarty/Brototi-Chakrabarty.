@@ -1,26 +1,27 @@
 ---
 title: "Exploratory Analysis of Maternal Health Risk Factors in Bangladesh"
-date: 2026-06-04
+date: 2026-07-30
 author: "Brototi Chakrabarty"
 ---
 
-# Final Report: Exploratory Analysis of Maternal Health Risk Factors in Bangladesh
 
 ## Introduction
 
-Maternal health risk assessment is important for identifying pregnant women who may require additional medical care. In this project, I will analyze a maternal health risk dataset collected from hospitals and community clinics in rural Bangladesh. The dataset includes maternal age, systolic and diastolic blood pressure, blood sugar, body temperature, heart rate, and maternal risk level.
+Maternal health risk assessment is important for identifying pregnant women who may require additional medical care. In this project, I  analyzed a maternal health risk dataset collected from hospitals and community clinics in rural Bangladesh. The dataset includes maternal age, systolic and diastolic blood pressure, blood sugar, body temperature, heart rate, and maternal risk level.
 
-I will use R to compare low-, mid-, and high-risk groups, examine relationships among the clinical measurements, and determine whether principal component analysis can reveal patterns among the maternal risk categories.
+I  used R to compare low-, mid-, and high-risk groups, examine relationships among the clinical measurements, and determine whether principal component analysis revealed patterns among the maternal risk categories.
 
 ## Packages Used
 
 ```{r}
+#| message: false
+#| warning: false
+
 library(tidyverse)
 library(here)
-```
-## Methods
 
-The dataset will be imported and analyzed using R and the tidyverse package. I will examine the structure and quality of the data, summarize the clinical measurements, and create bar charts, boxplots, scatterplots, and correlation plots. Principal component analysis will also be used to explore whether the maternal risk categories show distinct patterns.
+```
+
 
 ## Get the Data
 
@@ -54,7 +55,7 @@ levels(maternal_data$RiskLevel)
 
 ### 1. How many observations are classified as low, mid, or high risk?
 
-First, I will count the number of observations in each maternal risk category.
+To describe the distribution of maternal risk, I counted the number of observations in each risk category.
 
 ```{r}
 maternal_data |>
@@ -76,11 +77,11 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
-Low-risk observations were the most common, with 406 records (40.0%). Mid-risk observations included 336 records (33.1%), while high-risk observations included 272 records (26.8%). Although the high-risk group was the smallest category, it still represented more than one-quarter of the dataset.
+Low risk was the most common category, with 406 observations (40.0%), followed by mid risk with 336 observations (33.1%) and high risk with 272 observations (26.8%). Thus, more than one-quarter of the dataset was classified as high risk.
 
 ### 2. How does maternal age differ across risk groups?
 
-Maternal age will be compared across the low-, mid-, and high-risk categories.
+Next, I examined how maternal age varied across the low-, mid-, and high-risk categories.
 
 ```{r}
 maternal_data |>
@@ -97,11 +98,11 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
-Maternal age differed across the three risk categories. The high-risk group had a higher median age than the low- and mid-risk groups, although the age distributions overlapped. This suggests that higher maternal age is associated with increased risk classification in this dataset.
+The high-risk group had the highest median maternal age, while the low-risk group had the lowest. Although the distributions overlapped, older observations were more common in the high-risk category.
 
 ### 3. How do systolic and diastolic blood pressure differ across risk groups?
 
-Systolic and diastolic blood pressure will be compared among the three maternal risk categories.
+I then compared systolic and diastolic blood pressure across the three maternal risk categories.
 
 ```{r}
 maternal_data |>
@@ -128,11 +129,11 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
-Both systolic and diastolic blood pressure were higher in the high-risk group than in the low- and mid-risk groups. The median systolic blood pressure was approximately 130 mmHg in the high-risk group compared with about 120 mmHg in the other groups, while the median diastolic blood pressure was approximately 90 mmHg compared with about 75 mmHg. Although the distributions overlapped, the results suggest that higher blood pressure is associated with a higher maternal risk classification in this dataset.
+Both systolic and diastolic blood pressure were higher in the high-risk group than in the low- and mid-risk groups. The separation was especially noticeable for diastolic blood pressure.
 
 ### 4. How does blood sugar differ across maternal risk groups?
 
-Blood sugar measurements will be compared among the low-, mid-, and high-risk groups.
+Blood sugar distributions were evaluated across the low-, mid-, and high-risk groups.
 
 ```{r}
 maternal_data |>
@@ -149,11 +150,11 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
-Blood sugar levels were clearly higher in the high-risk group than in the low- and mid-risk groups. The high-risk group had a median blood sugar value of approximately 11, while the medians for the low- and mid-risk groups were around 7. Although some high blood sugar outliers were present in the mid-risk group, the overall pattern suggests that higher blood sugar is associated with a higher maternal risk classification in this dataset.
+Blood sugar was clearly higher in the high-risk group, with a median of approximately 11 compared with about 7 in the low- and mid-risk groups. The high-risk group also showed greater variability.
 
 ### 5. How do body temperature and heart rate differ across risk groups?
 
-Body temperature and heart rate will be compared among the maternal risk categories.
+To assess additional vital signs, I compared body temperature and heart rate among the maternal risk categories.
 
 ```{r}
 maternal_data |>
@@ -180,11 +181,11 @@ maternal_data |>
   ) +
   theme_minimal()
 ```
-Body temperature was similar across the three risk groups, with most observations close to 98°F. The mid- and high-risk groups showed a wider range of temperatures than the low-risk group. Heart rate was slightly higher in the high-risk group, but the distributions overlapped considerably. One unusually low heart-rate value was present in the low-risk group and may represent a recording error. Overall, body temperature and heart rate showed weaker differences across risk categories than blood sugar and blood pressure.
+Body temperature was generally similar across the three groups, although the mid- and high-risk groups showed a wider range. Heart rate was slightly higher in the high-risk group, and one unusually low value appeared in the low-risk group.
 
 ### 6. Which clinical measurements are most strongly associated with maternal risk level?
 
-The ordered risk categories will be converted to numeric scores, with low risk equal to 1, mid risk equal to 2, and high risk equal to 3. Spearman correlations will then be calculated.
+To identify the measurements most strongly associated with maternal risk, I converted the ordered risk categories to numeric scores: low risk as 1, mid risk as 2, and high risk as 3. I then calculated Spearman correlations.
 
 ```{r}
 risk_associations <- maternal_data |>
@@ -234,13 +235,15 @@ risk_associations |>
   ) +
   theme_minimal()
 ```
-Blood sugar showed the strongest positive association with increasing maternal risk level, followed by systolic blood pressure, diastolic blood pressure, and age. These results describe associations and do not demonstrate causation.
+  Blood sugar had the strongest positive correlation with increasing maternal risk level, followed by systolic blood pressure, diastolic blood pressure, and age. Heart rate and body temperature showed much weaker relationships.
+
 
 ### 7. Can PCA visually separate observations according to maternal risk category?
 
-Principal component analysis will be performed using the six numeric clinical measurements. The variables will be centered and standardized because they use different measurement scales.
+Finally, I performed principal component analysis using the six numeric clinical measurements. The variables were centered and standardized because they were measured on different scales.
 
 ```{r}
+# Create the PCA model
 pca_model <- maternal_data |>
   select(
     Age,
@@ -254,13 +257,20 @@ pca_model <- maternal_data |>
     center = TRUE,
     scale. = TRUE
   )
-```
 
-```{r}
+# Calculate variance explained
+pca_variance <- pca_model$sdev^2 / sum(pca_model$sdev^2)
+
+pc1_percent <- round(pca_variance[1] * 100, 1)
+pc2_percent <- round(pca_variance[2] * 100, 1)
+
+# Create PCA scores
 pca_data <- as_tibble(pca_model$x) |>
   mutate(
-    RiskLevel = maternal_data$RiskLevel)
+    RiskLevel = maternal_data$RiskLevel
+  )
 
+# Create the PCA plot
 pca_data |>
   ggplot(aes(
     x = PC1,
@@ -273,29 +283,40 @@ pca_data |>
   ) +
   labs(
     title = "PCA of Maternal Health Measurements",
-    subtitle = "Observations are colored by maternal risk category",
-    x = "Principal Component 1",
-    y = "Principal Component 2",
+    subtitle = paste0(
+      "PC1 and PC2 explain ",
+      round(pc1_percent + pc2_percent, 1),
+      "% of the total variation"
+    ),
+    x = paste0(
+      "Principal Component 1 (",
+      pc1_percent,
+      "%)"
+    ),
+    y = paste0(
+      "Principal Component 2 (",
+      pc2_percent,
+      "%)"
+    ),
     color = "Risk Level"
   ) +
   theme_minimal()
 ```
+
 The PCA plot shows partial separation of the maternal risk categories. High-risk observations were more frequently located on the positive side of Principal Component 1, while many low- and mid-risk observations were concentrated near the center or negative side. However, substantial overlap remained among all three groups, indicating that the six clinical measurements did not completely separate patients by maternal risk category. One low-risk observation appeared far from the other points along Principal Component 2 and may represent an unusual record or outlier.
 
 
-
 ## Discussion
-
-What do your results mean? How do they relate to your research question? What limitations exist? What would you do next?
+High-risk observations generally had higher age, blood pressure, and blood sugar. Blood sugar showed the strongest association with risk level, while body temperature and heart rate showed weaker differences. PCA showed partial separation among risk groups, but considerable overlap remained.
 
 ## Conclusions
 
-Summarize your findings and their implications.
+Maternal risk level was most strongly associated with blood sugar and blood pressure. These results show associations only and do not prove causation.
 
 ## References
 
-
+Ahmed, M. (2020). *Maternal Health Risk* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5DP5D
 
 ---
 
-**Last updated:** June 2026
+**Last updated:** July 2026

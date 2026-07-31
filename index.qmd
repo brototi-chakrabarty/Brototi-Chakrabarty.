@@ -1,44 +1,24 @@
 ---
-title: "Brototi"
+title: "Brototi Chakrabarty"
 toc: false
-image: "your photo.jpg"
+image: Brototi-Picture.jpg
 about:
   template: trestles
   links:
-  - text: GitHub
-    href: link
-  - href: https://brototi-chakrabarty.github.io/Brototi-Chakrabarty./
+    - icon: github
+      text: GitHub
+      href: https://github.com/brototi-chakrabarty
     - icon: envelope
       text: Email
       href: mailto:brototi-chakrabarty@ou.edu
 ---
 ::: {.columnpage}
 
-# Hello! 👋
-
-Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course.
-
-## About Me
-
-Replace this section with information about yourself:
-
-- **Name:** Brototi Chakrabarty
-- **Institution:** University of Oklahoma Health Campus
-- **Research Interests:** Nanoformulations and localized drug-delivery systems for inner-ear diseases 
-- **Email:** brototi-chakrabarty@ou.edu
-
 ## My Research
 
 My research focuses on developing advanced drug-delivery systems for the treatment and prevention of inner-ear diseases. I am particularly interested in nanoformulations, exosome-based drug delivery, lipid-based nanoparticles, and thermoresponsive hydrogels.
 
 
-## Research Interests
 
-- Nanomedicine and targeted drug delivery
-- Inner-ear drug delivery
-- Exosome-based formulations
-- Polymeric and lipid-based nanoparticles
-- Thermoresponsive hydrogels
-- Three-dimensional cell-culture models
-- Reproducible data analysis using R
+
 
